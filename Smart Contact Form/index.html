@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Contact Form</title>
+        <link rel="stylesheet" href="style.css">    
+    </head>
+    <body>
+        <h1>📧 Contact Form</h1>
+
+        <form id="contact-form" novalidate>
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" placeholder="John Doe" required aria-describedby="name-error" />
+            <span id="name-error" class="error" aria-live="polite"></span>
+
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="john@example.com" required aria-describedby="email-error"/>
+            <span id="email-error" class="error" aria-live="polite"></span>
+
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" placeholder="Write your message..." required aria-describedby="message-error"></textarea>
+            <span id="message-error" class="error" aria-live="polite"></span>
+
+            <button id="submit-btn" type="submit">Submit</button>
+            <div id="submit-message" role="status" aria-live="polite" tabindex="-1" style="margin-top:8px; min-height:1.2em"></div>
+        </form>
+
+        <hr />
+
+        <h2>📋 Message History</h2>
+        <div id="messages-list" aria-live="polite"></div>
+
+        <script src="script.js">  </script>
+    </body>
+</html>
