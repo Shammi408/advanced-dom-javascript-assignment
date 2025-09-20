@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ToDo List</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>✅ My ToDo App</h1>
+
+  <section>
+    <h3>Add ToDo</h3>
+    <form id="todo-form" novalidate>
+      <label for="todo" class="sr-only">New todo</label>
+      <input type="text" id="todo" name="todo" placeholder="Add new todo..." required>
+      <button id="submit-btn" type="submit">Add</button>
+      <div id="submit-message" role="status" aria-live="polite" tabindex="-1" style="margin-top:8px; min-height:1.2em"></div>
+    </form>
+  </section>
+
+  <section style="margin-top:18px;">
+    <form id="search-form" onsubmit="return false;">
+      <label for="search">Search 🔍</label>
+      <input type="text" id="search" name="search" placeholder="Search todos...">
+    </form>
+
+    <div style="margin-top:8px;">
+      Filters:
+      <button class="filter-btn" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="active">Active</button>
+      <button class="filter-btn" data-filter="completed">Completed</button>
+    </div>
+
+    <div id="todo-counter" style="margin-top:8px; font-weight:600;">📝 Todo List (0 total, 0 completed)</div>
+  </section>
+
+  <section style="margin-top:12px;">
+    <div id="todos-list" aria-live="polite"></div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
