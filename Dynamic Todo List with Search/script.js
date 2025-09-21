@@ -1,10 +1,6 @@
-/* script.js -- full todo app with search/filter, debounced search, localStorage, event delegation */
-
-/* ---------- Config ---------- */
 const STORAGE_KEY = 'todo_list_v1';
 const SEARCH_DEBOUNCE_MS = 400;
 
-/* ---------- Storage helpers ---------- */
 function loadTodos() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -25,7 +21,6 @@ function saveTodos(todos) {
   }
 }
 
-/* ---------- Utilities ---------- */
 function debounce(fn, wait = 300) {
   let timer = null;
   return function(...args) {
@@ -51,7 +46,6 @@ function formatDate(isoOrEpoch) {
   }).replace(',', ' at');
 }
 
-/* ---------- DOM refs ---------- */
 const form = document.getElementById('todo-form');
 const todoInput = document.getElementById('todo');
 const submitMsgEl = document.getElementById('submit-message');
@@ -60,12 +54,10 @@ const searchInput = document.getElementById('search');
 const counterEl = document.getElementById('todo-counter');
 const filterButtons = Array.from(document.querySelectorAll('.filter-btn'));
 
-/* ---------- App state ---------- */
-let todos = loadTodos(); // array of todo objects
-let currentFilter = 'all'; // 'all' | 'active' | 'completed'
-let currentQuery = ''; // search query (lowercased)
+let todos = loadTodos(); 
+let currentFilter = 'all'; 
+let currentQuery = ''; 
 
-/* ---------- Rendering ---------- */
 function updateCounter() {
   const total = todos.length;
   const completed = todos.filter(t => t.completed).length;
@@ -93,32 +85,23 @@ function renderTodoList(items) {
       </label>
     </div>
   `).join('');
-
   updateCounter();
 }
 
-/* ---------- Filtering & searching ---------- */
 function applyFiltersAndSearch() {
   const q = currentQuery.trim().toLowerCase();
 
-  let results = todos.slice(); // copy
+  let results = todos.slice(); // copy the rsult array
 
-  // Filter by completion state
   if (currentFilter === 'active') results = results.filter(t => !t.completed);
   else if (currentFilter === 'completed') results = results.filter(t => t.completed);
 
-  // Search by text
   if (q.length > 0) {
     results = results.filter(t => t.text.toLowerCase().includes(q));
   }
-
-  // Sort newest-first (optional)
-  results.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
-
   renderTodoList(results);
 }
 
-/* ---------- Event handlers ---------- */
 form.addEventListener('submit', function(e) {
   e.preventDefault();
   const v = todoInput.value.trim();
@@ -138,7 +121,7 @@ form.addEventListener('submit', function(e) {
     createdAt: new Date().toISOString()
   };
 
-  todos.unshift(newTodo); // newest-first
+  todos.unshift(newTodo);
   const ok = saveTodos(todos);
   if (!ok) {
     showSubmitMessage('Could not save todo locally. Check storage settings.', { type: 'error' });
@@ -152,7 +135,6 @@ form.addEventListener('submit', function(e) {
   applyFiltersAndSearch();
 });
 
-/* Event delegation for checkbox toggle & delete */
 listContainer.addEventListener('click', (e) => {
   const deleteBtn = e.target.closest('.delete-btn');
   if (deleteBtn) {
@@ -186,7 +168,6 @@ listContainer.addEventListener('click', (e) => {
   }
 });
 
-/* Filter buttons */
 filterButtons.forEach(btn => {
   btn.addEventListener('click', () => {
     filterButtons.forEach(b => b.classList.remove('active'));
@@ -196,7 +177,6 @@ filterButtons.forEach(btn => {
   });
 });
 
-/* Debounced search */
 const debouncedSearch = debounce(() => {
   currentQuery = searchInput.value;
   applyFiltersAndSearch();
@@ -206,7 +186,6 @@ searchInput.addEventListener('input', () => {
   debouncedSearch();
 });
 
-/* ---------- Helpers ---------- */
 function showSubmitMessage(text, opts = { type: 'success', autoHide: 3000 }) {
   submitMsgEl.textContent = text || '';
   submitMsgEl.className = (opts.type === 'success') ? 'success' : 'error';
@@ -216,5 +195,4 @@ function showSubmitMessage(text, opts = { type: 'success', autoHide: 3000 }) {
   }
 }
 
-/* Initial render */
 applyFiltersAndSearch();
